@@ -2,7 +2,7 @@
 
 new Vue({
   // Target div with id = 'events'
-  el: '#events'
+  el: '#events',
 
   // Register any values or collections that hold data for the app
   data: {
@@ -46,7 +46,32 @@ new Vue({
       // data onto an array
       this.$set('events', events);
     },
+
+    fetchEventsApiGet: function() {
+      this.$http.get('api/events').success(function(events) {
+        this.$set('events', events);
+      }).error(function(error) {
+        console.log(error);
+      });
+    },
+
+    fetchEventsApiPost: function() {
+      this.$http.post('api/events', this.event).success(function(response) {
+        this.events.push(this.event);
+        console.log("Event added!");
+      }).error(function(error) {
+        console.log(error);
+      });
+    }
   
+    fetchEventsApiDelete: function() {
+      this.$http.delete('api/events/' + event.id).success(function(response) {
+        this.events.$remove(index);
+      }).error(function(error) {
+        console.log(error);
+      });
+    },
+
     // Adds an event to the existing events array
     addEvent: function() {
       if(this.event.name) {
